@@ -36,3 +36,4 @@ class GetLogHandler(Handler):
         path_elements = path.split('/')
         if len(path_elements) != 2:
             raise _BadPathException("Path [ {} ] does not have two elements!".format(path))
+        return path_elements[0], path_elements[1]

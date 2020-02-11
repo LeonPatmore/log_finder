@@ -49,8 +49,7 @@ class Server(HTTPServer):
         log = self._get_log_by_name(log_name)
         if log is None:
             raise UnknownLogFileException("Log name [ {} ] is not known!".format(log_name))
-        self._schedule_refresh_logs()
-        return self.collections.get(log_name).query({log.name: index_id}, True)
+        return self.collections.get(log_name).query({log.index_field: index_id}, True)
 
     def _get_log_by_name(self, log_name: str) -> Log or None:
         for log in self.logs:
@@ -81,4 +80,4 @@ class Server(HTTPServer):
         while self.running:
             logger.info("Running logs refresh!")
             self._refresh_logs()
-            sleep(10)
+            sleep(2)

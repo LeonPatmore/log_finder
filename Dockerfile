@@ -4,5 +4,5 @@ ENV PATH="/root/.local/bin:${PATH}"
 WORKDIR /app
 COPY . .
 RUN pipenv install
-EXPOSE 1234/tcp
+EXPOSE 4321/tcp
 CMD [ "pipenv", "run", "python", "main.py" ]
