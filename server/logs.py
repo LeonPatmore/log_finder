@@ -11,6 +11,7 @@ def generate_logs(configuration: Configuration) -> list:
         if len(log_info) != 3:
             raise Exception("Log config is not recognised!")
         logs.append(Log(*log_info))
+    return logs
 
 
 class Log(object):
