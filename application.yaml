@@ -1,0 +1,8 @@
+server:
+  host: 0.0.0.0
+  port: 4321
+logs: "test_logs:*.log:uniqueId"
+mongo:
+  host: localhost
+  port: 27017
+  database: log_finder
