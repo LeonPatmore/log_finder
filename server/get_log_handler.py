@@ -16,17 +16,21 @@ class GetLogHandler(Handler):
     def do_GET(self):
         try:
             log_name, index_id = self._parse_path(self.clean_path())
-
             logger.info("Searching for log [ {} ] with ID [ {} ]".format(log_name, index_id))
+
+            logs = self.get_server().get_json_by_id(log_name, index_id)
+
             self.send_response(202)
             self.send_header(Handler.CONTENT_TYPE_HEADER, Handler.CONTENT_TYPE_JSON)
             self.end_headers()
-            self.wfile.write(json.dumps(self.get_server().get_json_by_id(log_name, index_id)).encode('utf-8'))
+            self.wfile.write(json.dumps(logs).encode('utf-8'))
         except _BadPathException:
             self.send_response(400)
+            self.end_headers()
             self.wfile.write("Bad path!".encode('utf-8'))
         except UnknownLogFileException:
             self.send_response(400)
+            self.end_headers()
             self.wfile.write("Unknown log name!".encode('utf-8'))
 
     @staticmethod
