@@ -15,10 +15,19 @@ class GetLogHandler(Handler):
 
     def do_GET(self):
         try:
-            log_name, index_id = self._parse_path(self.clean_path())
-            logger.info("Searching for log [ {} ] with ID [ {} ]".format(log_name, index_id))
 
-            logs = self.get_server().get_json_by_id(log_name, index_id)
+            path = self.clean_path()
+            path_elements = path.split('/')
+            log_name = path_elements[0]
+            field_value = path_elements[-1]
+
+            if "trace_id" in path:
+                logger.info("Searching for log [ {} ] with trace ID [ {} ]".format(log_name, field_value))
+                logs = self.get_server().get_json_by_query_field(log_name, "traceId", field_value)
+
+            else:
+                logger.info("Searching for log [ {} ] with ID [ {} ]".format(log_name, field_value))
+                logs = self.get_server().get_json_by_id(log_name, field_value)
 
             self.send_response(202)
             self.send_header(Handler.CONTENT_TYPE_HEADER, Handler.CONTENT_TYPE_JSON)
@@ -33,11 +42,3 @@ class GetLogHandler(Handler):
             self.end_headers()
             self.wfile.write("Unknown log name!".encode('utf-8'))
 
-    @staticmethod
-    def _parse_path(path: str) -> tuple:
-        if path.startswith("/"):
-            path = path[1:]
-        path_elements = path.split('/')
-        if len(path_elements) != 2:
-            raise _BadPathException("Path [ {} ] does not have two elements!".format(path))
-        return path_elements[0], path_elements[1]

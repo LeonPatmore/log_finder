@@ -45,11 +45,14 @@ class Server(HTTPServer):
         if log.index_field in json:
             self.collections.get(log.name).insert(json)
 
-    def get_json_by_id(self, log_name: str, index_id: str) -> list:
+    def get_json_by_query_field(self, log_name: str, query_field: str, query_value: str) -> list:
+        return self.collections.get(log_name).query({query_field: query_value}, True)
+
+    def get_json_by_id(self, log_name: str, query_value: str) -> list:
         log = self._get_log_by_name(log_name)
         if log is None:
             raise UnknownLogFileException("Log name [ {} ] is not known!".format(log_name))
-        return self.collections.get(log_name).query({log.index_field: index_id}, True)
+        return self.get_json_by_query_field(log_name, log.index_field, query_value)
 
     def _get_log_by_name(self, log_name: str) -> Log or None:
         for log in self.logs:

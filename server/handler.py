@@ -9,7 +9,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         return self.send_error(403)
 
-    def do_POST(self):
+    def do_POST(self) :
         return self.send_error(403)
 
     def get_server(self):
