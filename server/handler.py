@@ -1,4 +1,5 @@
 from http.server import BaseHTTPRequestHandler
+from urllib import parse
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -16,6 +17,11 @@ class Handler(BaseHTTPRequestHandler):
         return self.server
 
     def clean_path(self) -> str:
-        if self.path.startswith("/"):
-            return self.path[1:]
-        return self.path
+        url_parse = parse.urlparse(self.path)
+        query_params = parse.parse_qs(url_parse.query)
+        path = url_parse.path  # type: str
+        if path.startswith("/"):
+            path = path[1:]
+        if path.endswith('/'):
+            path = path[:-1]
+        return path, query_params

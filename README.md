@@ -16,3 +16,12 @@ A HTTP API for querying JSON logs on a local machine.
 2. `docker tag nexmo-chatapp-log-finder:latest 564623767830.dkr.ecr.eu-west-1.amazonaws.com/nexmo-chatapp-log-finder:latest`
 
 3. `docker push 564623767830.dkr.ecr.eu-west-1.amazonaws.com/nexmo-chatapp-log-finder:latest`
+
+
+## Running Locally
+
+1. Start MongoDB instance: `docker run -p 27017:27017 --name log-finder-mongo -d mongo:latest`
+
+1. `pipenv install`
+
+2. `pipenv run python main.py`
